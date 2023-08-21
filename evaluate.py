@@ -35,7 +35,7 @@ alpha = FLAGS.alpha
 LOG_DIR = FLAGS.log_dir
 if not os.path.exists(LOG_DIR):
     os.mkdir(LOG_DIR)
-LOG_FOUT = open(os.path.join(LOG_DIR, 'log_train.txt'), 'w')
+LOG_FOUT = open(os.path.join(LOG_DIR, 'log_eval.txt'), 'w')
 LOG_FOUT.write(str(FLAGS) + '\n')
 
 
@@ -142,9 +142,6 @@ def main():
     time_end = time.time()
     log_string('totally time cost is {} minutes'.format((time_end - time_start) / 60))
     log_string('totally time cost is {} minutes'.format((time_end - time_start) // 60))
-
-    with open(os.path.join(LOG_DIR, 'params.pkl'), 'wb') as f:
-        pickle.dump(params_total, f)
 
 
 if __name__ == '__main__':
