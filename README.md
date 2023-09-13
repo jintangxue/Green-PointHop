@@ -4,7 +4,7 @@ Created by Min Zhang, Jintang Xue, Pranav Kadam, Hardik Prajapati, Shan Liu, C-C
 ![introduction](https://github.com/jintangx/Green-PointHop/blob/master/doc/intro.png)
 
 ### Introduction
-This work is an official implementation of our [arXiv tech report](https://arxiv.org/abs/2303.10898). We proposed a tiny and explainable machine learning method for point cloud, called the Green-PointHop method.
+This work is an official implementation of our [paper](http://dx.doi.org/10.1561/116.00000114). We proposed a tiny and explainable machine learning method for point cloud, called the Green-PointHop method.
 
 The design of a tiny machine learning model, which can be deployed in mobile and edge devices, for point cloud object classification is investigated in this work. To achieve this objective, we replace the multi-scale representation of a point cloud object with a single-scale representation for complexity reduction, and exploit rich 3D geometric information of a point cloud object for performance improvement. The proposed solution is named Green-PointHop due to its low computational complexity. We evaluate the performance of Green-PointHop on ModelNet40 and ScanObjectNN two datasets. Green-PointHop has a model size of 64K parameters. It demands 2.3M floating-point operations (FLOPs) to classify a ModelNet40 object of 1024 down-sampled points. Its classification performance gaps against the state-of-the-art DGCNN method are 3% and 7% for ModelNet40 and ScanObjectNN, respectively. On the other hand, the model size and inference complexity of DGCNN are 42X and 1203X of those of Green-PointHop, respectively.
 
