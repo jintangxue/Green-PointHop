@@ -12,6 +12,7 @@ In this repository, we release code and data for training a Green-PointHop class
 
 ### Citation
 If you find our work useful in your research, please consider citing:
+
     @article{SIP-2023-0014,
         url = {http://dx.doi.org/10.1561/116.00000114},
         year = {2023},
