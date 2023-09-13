@@ -12,13 +12,19 @@ In this repository, we release code and data for training a Green-PointHop class
 
 ### Citation
 If you find our work useful in your research, please consider citing:
-
-    @article{zhang2023tiny,
-      title={A Tiny Machine Learning Model for Point Cloud Object Classification},
-      author={Zhang, Min and Xue, Jintang and Kadam, Pranav and Prajapati, Hardik and Liu, Shan and Kuo, C-C Jay},
-      journal={arXiv preprint arXiv:2303.10898},
-      year={2023}
+    @article{SIP-2023-0014,
+        url = {http://dx.doi.org/10.1561/116.00000114},
+        year = {2023},
+        volume = {12},
+        journal = {APSIPA Transactions on Signal and Information Processing},
+        title = {A Tiny Machine Learning Model for Point Cloud Object Classification},
+        doi = {10.1561/116.00000114},
+        issn = {},
+        number = {1},
+        pages = {-},
+        author = {Min Zhang and Jintang Xue and Pranav Kadam and Hardik Prajapati and Shan Liu and C.-C. Jay Kuo}
     }
+    
 ### Installation
 
 The code has been tested with Python 3.7. You may need to install h5py, pytorch, sklearn, pickle and threading packages.
