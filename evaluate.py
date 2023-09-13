@@ -62,7 +62,7 @@ def main():
         valid_data = test_data
         valid_label = test_label
 
-    print(train_data.shape, train_label.shape, valid_data.shape, valid_label.shape)
+    # print(train_data.shape, train_label.shape, valid_data.shape, valid_label.shape)
 
     feat_valid = []
     feat_valid_final = []
@@ -74,18 +74,19 @@ def main():
     weight = params_total['weight:', 0]
 
     # Octant feature
-    log_string('------------Test {} --------------'.format(0))
+    log_string('-------------------Getting octant features-------------------')
     leaf_node_test, hop_node_test_octant, test_new_data = pointhop.pointhop_pred(False, valid_data,
                                                                                  pca_params=params,
                                                                                  n_newpoint=num_point,
                                                                                  n_sample=[num_sample[0]])
 
-    print("hop_node_test_octant:", len(num_point))
+    # print("hop_node_test_octant:", len(num_point))
     log_string('Octant shape: {}'.format(np.array(hop_node_test_octant[0]).shape))
     time_find_hop = time.time()
     log_string('Find hop is {} minutes'.format((time_find_hop - time_start) // 60))
 
     # Aggregation
+    log_string('-------------------Aggregation-------------------')
     # Global Aggregation
     feature_test_temp = aggregation_utils.global_agg(hop_node_test_octant)
     time_find_hist_global = time.time()
@@ -96,12 +97,12 @@ def main():
     time_find_hist_cone = time.time()
     log_string('Find cone agg is {} minutes'.format((time_find_hist_cone - time_find_hist_global) // 60))
 
-    print("feature_test_temp:", len(feature_test_temp))
-    print("feature_test_cones:", len(feature_test_cones))
+    # print("feature_test_temp:", len(feature_test_temp))
+    # print("feature_test_cones:", len(feature_test_cones))
     feature_test_one = []
     for j in range(len(num_point)):
-        print("feature_test_temp[{}]:".format(j), np.array(feature_test_temp[j]).shape)
-        print("feature_test_cones[{}]:".format(j), np.array(feature_test_cones[j]).shape)
+        # print("feature_test_temp[{}]:".format(j), np.array(feature_test_temp[j]).shape)
+        # print("feature_test_cones[{}]:".format(j), np.array(feature_test_cones[j]).shape)
 
         N_cones = np.array(feature_test_cones[j]).shape[0]
 
@@ -110,28 +111,30 @@ def main():
                                                                              0],
                                                                          -1)
 
-        print("feature_test_temp:", np.array(feature_test_temp[j]).shape)
-        print("feature_test_cones:", np.array(feature_test_cones_1).shape)
+        # print("feature_test_temp:", np.array(feature_test_temp[j]).shape)
+        # print("feature_test_cones:", np.array(feature_test_cones_1).shape)
         feature_test_temp_1 = np.concatenate([[feature_test_temp[j]], feature_test_cones_1], axis=0)
         feature_test_one.append(feature_test_temp_1)
 
     feature_test_temp = feature_test_one
 
     # DFT
+    log_string('-------------------DFT-------------------')
     feature_test_octant = [np.concatenate(feature_test_temp[0], axis=-1)]
 
-    print("feature_test_octant:", feature_test_octant[0].shape)
+    # print("feature_test_octant:", feature_test_octant[0].shape)
     feature_test = np.array(feature_test_octant[0])
-    print("feature_test:", feature_test.shape)
+    # print("feature_test:", feature_test.shape)
     ind = params_total['DFT_ind:', 0]
     feature_test = feature_test[:, ind]
     
     time_DFT = time.time()
     log_string('DFT is {} minutes'.format((time_DFT - time_find_hist_cone) // 60))
 
-    print("feature_test:", feature_test.shape)
+    # print("feature_test:", feature_test.shape)
 
     # LLSR Classifier
+    log_string('-------------------LLSR Classifier-------------------')
     feature_valid, pred_valid = pointhop.llsr_pred(feature_test, weight)
     feat_valid_final.append(feature_valid)
     acc_valid = sklearn.metrics.accuracy_score(valid_label, pred_valid)

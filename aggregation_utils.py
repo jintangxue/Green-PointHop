@@ -25,7 +25,7 @@ def get_global_agg(octant_feature, octant_data_shape, agg_results):
         train_hist_one = np.array(train_hist_one)
         agg_temp.append(train_hist_one)
 
-    print("train_hist_temp", np.array(agg_temp).shape)
+    # print("train_hist_temp", np.array(agg_temp).shape)
 
     agg_results.append(agg_temp)
 
@@ -36,7 +36,7 @@ def global_agg_multi(octant_fea):
 
     octant_fea = octant_fea.reshape(-1, octant_fea.shape[-1])  # (512000, 33)
 
-    print("feature:", octant_fea.shape)
+    # print("feature:", octant_fea.shape)
     batch_size = octant_fea.shape[-1] // 8
     agg_1 = []
     agg_2 = []
@@ -75,7 +75,7 @@ def global_agg_multi(octant_fea):
 
     global_agg_final = np.transpose(np.array(global_agg_final), [1, 0, 2])  # (50, 33, 32)
 
-    print("global_agg_final:", global_agg_final.shape)
+    # print("global_agg_final:", global_agg_final.shape)
 
     return global_agg_final
 
@@ -83,11 +83,11 @@ def global_agg_multi(octant_fea):
 def global_agg(octant_fea):
     final_feature_agg = []
     for i in range(len(octant_fea)):  # (4, Ln, B, N, dim)
-        print("train:", i)
+        # print("train:", i)
         one_hop_node = np.array(np.transpose(np.squeeze(octant_fea[i]), [1, 2, 0]))
-        print("one_hop_node:", one_hop_node.shape)  # (B, N, dim)
+        # print("one_hop_node:", one_hop_node.shape)  # (B, N, dim)
         agg_temp = global_agg_multi(one_hop_node)
-        print("agg_temp:", agg_temp.shape)
+        # print("agg_temp:", agg_temp.shape)
         agg_temp = agg_temp.reshape(agg_temp.shape[0], -1)
         final_feature_agg.append(agg_temp)
 
@@ -97,15 +97,15 @@ def global_agg(octant_fea):
 def six_cones_agg(pc_data, octant_fea, alpha):
     final_feature_agg = []
     for i in range(len(octant_fea)):  # (4, Ln, B, N, 1)
-        print("train:", i)
+        # print("train:", i)
         cones_idx = get_six_cones_idx(pc_data[i], alpha)
 
         one_hop_node = np.array(np.transpose(np.squeeze(octant_fea[i]), [1, 2, 0]))
-        print("one_hop_node:", one_hop_node.shape)  # (B, N, dim)
+        # print("one_hop_node:", one_hop_node.shape)  # (B, N, dim)
 
-        six_agg_temp = get_six_cones_hists_multi(cones_idx, one_hop_node, pc_data[i])
+        six_agg_temp = get_six_cones_aggs_multi(cones_idx, one_hop_node, pc_data[i])
 
-        print("train_FPFH_hist_1", six_agg_temp.shape)  # (6, 300, 24, 32)
+        # print("train_FPFH_hist_1", six_agg_temp.shape)  # (6, 300, 24, 32)
         final_feature_agg.append(six_agg_temp)
 
     return final_feature_agg
@@ -142,7 +142,7 @@ def get_six_cones_idx(data, alpha):
     data_sph = xyz2sph(data.reshape(-1, 3)).reshape(data_shape[0], data_shape[1], -1)  # (B, N, 6)
     # (x,y,z,r,elevation,azimuth)
     # print("train_data_sph:", data_sph)
-    print("train_data_sph:", data_sph.shape)
+    # print("train_data_sph:", data_sph.shape)
 
     # Get cone masks
     cones_idx = []
@@ -173,7 +173,7 @@ def get_six_cones_idx(data, alpha):
     cones_idx.append(np.squeeze(inverted_cone_mask(data_sph[:, :, :3], np.array([0, 0, -1]))))
 
     cones_idx = cones_idx[6:]     
-    print("cones_idx:", np.array(cones_idx).shape)  # (6, B, N)
+    # print("cones_idx:", np.array(cones_idx).shape)  # (6, B, N)
 
     return cones_idx
 
@@ -196,20 +196,20 @@ def inverted_cone_mask(point_data, x_tip):
     return mask_cone1
     
 
-def get_six_cones_hists_multi(six_cones_idx, octant_fea, pc_data, n_jobs=-1):
+def get_six_cones_aggs_multi(six_cones_idx, octant_fea, pc_data, n_jobs=-1):
     print("getting six cones aggregation")
-    print("octant_fea:", octant_fea.shape)
-    print("pc_data:", pc_data.shape)
+    # print("octant_fea:", octant_fea.shape)
+    # print("pc_data:", pc_data.shape)
     six_cones_agg_final = Parallel(n_jobs=n_jobs, verbose=1)(
         get_six_cones_hists([x[j] for x in six_cones_idx], octant_fea[j], pc_data[j]) for j in range(len(octant_fea)))
 
     six_cones_agg_final = np.concatenate(six_cones_agg_final, axis=0)
 
     # (33, 6, 50, 32)
-    print("train_hist:", six_cones_agg_final.shape) # (9840, 24, 9, 7)
+    # print("train_hist:", six_cones_agg_final.shape) # (9840, 24, 9, 7)
     six_cones_agg_final = np.transpose(np.array(six_cones_agg_final), [2, 0, 3, 1])  # (6, 50, 33, 32)
 
-    print("six_cones_agg_final:", six_cones_agg_final.shape)
+    # print("six_cones_agg_final:", six_cones_agg_final.shape)
 
     return six_cones_agg_final
 
