@@ -1,7 +1,7 @@
 # A Tiny Machine Learning Model for Point Cloud Object Classification
 Created by Min Zhang, Jintang Xue, Pranav Kadam, Hardik Prajapati, Shan Liu, C-C Jay Kuo from University of Southern California.
 
-![introduction](https://github.com/jintangx/Green-PointHop/blob/master/doc/intro.png)
+![introduction](doc/intro.png)
 
 ### Introduction
 This work is an official implementation of our [paper](http://dx.doi.org/10.1561/116.00000114). We proposed a tiny and explainable machine learning method for point cloud, called the Green-PointHop method.
